@@ -22,6 +22,7 @@ BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
+RECT drawArea = { 0, 0, 600, 800};
 
 void MyOnPaint(HDC hdc)
 {
@@ -143,11 +144,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
    
-   hwndButton = CreateWindow(TEXT("button"), TEXT("góra"),
+   hwndButton = CreateWindow(TEXT("button"), TEXT("gÃ³ra"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   1000, 0, 50, 50, hWnd, (HMENU)ID_BUTTON1, hInstance, NULL);
 
-   hwndButton = CreateWindow(TEXT("button"), TEXT("dó³"),
+   hwndButton = CreateWindow(TEXT("button"), TEXT("dÃ³Â³"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   1000, 100, 50, 50, hWnd, (HMENU)ID_BUTTON2, hInstance, NULL);
 
@@ -235,7 +236,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			case TMR_1:
 				//force window to repaint
-				InvalidateRect(hWnd, NULL, TRUE);
+				InvalidateRect(hWnd, &drawArea, TRUE);
 				hdc = BeginPaint(hWnd, &ps);
 				MyOnPaint(hdc);
 				EndPaint(hWnd, &ps);
