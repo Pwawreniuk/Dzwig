@@ -241,7 +241,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				obiekt_y -= 10;
 			break;
 		case ID_BUTTON2:
-			if (podniesiony == true && obiekt_y < 400){
+			if (podniesiony == true && obiekt_y < 400){				//ograniczenie z dolu
 				kierunek_y += 10;
 				obiekt_y += 10; }
 				else if (podniesiony == false && kierunek_y < 450)
@@ -253,7 +253,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				obiekt_x -= 10;
 			break;
 		case ID_BUTTON4:
-			if (podniesiony == true && obiekt_x < 550){
+			if (podniesiony == true && obiekt_x < 550){				//ograniczenie z prawej
 				kierunek_x += 10;
 				obiekt_x += 10; }
 			else if (podniesiony == false && kierunek_y < 600)
@@ -284,7 +284,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			case TMR_1:
 				//force window to repaint
-				if (podniesiony == false && obiekt_y < 400)
+				if (podniesiony == false && obiekt_y < 400)			// spadanie elementu
 				obiekt_y += 10;
 				InvalidateRect(hWnd, &drawArea, TRUE);
 				hdc = BeginPaint(hWnd, &ps);
