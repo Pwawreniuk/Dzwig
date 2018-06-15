@@ -23,6 +23,7 @@ BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
+RECT drawArea = { 0, 0, 600, 800};
 
 void MyOnPaint(HDC hdc)
 {
@@ -32,6 +33,7 @@ void MyOnPaint(HDC hdc)
 
 	graphics.DrawLine(&pen, kierunek_x, 0, kierunek_x, kierunek_y);
 	graphics.DrawRectangle(&pen2, obiekt_x, obiekt_y, 50, 50);
+	graphics.DrawLine(&pen, 0, 450, 600, 450);
 }
 
 
@@ -147,11 +149,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
    
-   hwndButton = CreateWindow(TEXT("button"), TEXT("góra"),
+   hwndButton = CreateWindow(TEXT("button"), TEXT("gÃ³ra"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   1000, 0, 50, 50, hWnd, (HMENU)ID_BUTTON1, hInstance, NULL);
 
-   hwndButton = CreateWindow(TEXT("button"), TEXT("dó³"),
+   hwndButton = CreateWindow(TEXT("button"), TEXT("dÃ³3"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   1000, 100, 50, 50, hWnd, (HMENU)ID_BUTTON2, hInstance, NULL);
 
@@ -163,10 +165,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   1050, 50, 50, 50, hWnd, (HMENU)ID_BUTTON4, hInstance, NULL);
 
-   hwndButton = CreateWindow(TEXT("button"), TEXT("podnieœ"),
+   hwndButton = CreateWindow(TEXT("button"), TEXT("podnies"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   975, 200, 100, 50, hWnd, (HMENU)ID_BUTTON5, hInstance, NULL);
-
+	
+	hwndButton = CreateWindow(TEXT("button"), TEXT("upusc"),
+	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+	   975, 300, 100, 50, hWnd, (HMENU)ID_BUTTON6, hInstance, NULL);
    OnCreate(hWnd);
 
    if (!hWnd)
@@ -204,7 +209,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	else
 		EnableWindow(GetDlgItem(hWnd, ID_BUTTON5), FALSE);
-
+	if (podniesiony == true)
+	{
+		EnableWindow(GetDlgItem(hWnd, ID_BUTTON6), TRUE);
+	}
+	else
+		EnableWindow(GetDlgItem(hWnd, ID_BUTTON6), FALSE);
 	switch (message)
 	{
 	case WM_COMMAND:
@@ -225,9 +235,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				obiekt_y -= 10;
 			break;
 		case ID_BUTTON2:
-			kierunek_y += 10;
-			if (podniesiony == true)
-				obiekt_y += 10;
+			if (podniesiony == true && kierunek_y < 400){
+				kierunek_y += 10;
+				obiekt_y += 10; }
+				else if (podniesiony == false && kierunek_y < 450)
+				kierunek_y += 10;
 			break;
 		case ID_BUTTON3:
 			kierunek_x -= 10;
@@ -241,6 +253,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case ID_BUTTON5:
 			podniesiony = true;
+			break;
+		case ID_BUTTON6:
+			podniesiony = false;
 			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
@@ -261,7 +276,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			case TMR_1:
 				//force window to repaint
-				InvalidateRect(hWnd, NULL, TRUE);
+				if (podniesiony == false && obiekt_y < 400)
+				obiekt_y += 10;
+				InvalidateRect(hWnd, &drawArea, TRUE);
 				hdc = BeginPaint(hWnd, &ps);
 				MyOnPaint(hdc);
 				EndPaint(hWnd, &ps);
