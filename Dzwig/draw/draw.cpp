@@ -34,6 +34,12 @@ void MyOnPaint(HDC hdc)
 	graphics.DrawLine(&pen, kierunek_x, 0, kierunek_x, kierunek_y);
 	graphics.DrawRectangle(&pen2, obiekt_x, obiekt_y, 50, 50);
 	graphics.DrawLine(&pen, 0, 450, 600, 450);
+	graphics.DrawLine(&pen, 600, 0, 600, 450);
+	if (podniesiony == true)
+	{
+		graphics.DrawLine(&pen, obiekt_x, obiekt_y, obiekt_x + 50, obiekt_y + 50);
+		graphics.DrawLine(&pen, obiekt_x, obiekt_y + 50, obiekt_x + 50, obiekt_y);
+	}
 }
 
 
@@ -235,7 +241,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				obiekt_y -= 10;
 			break;
 		case ID_BUTTON2:
-			if (podniesiony == true && kierunek_y < 400){
+			if (podniesiony == true && obiekt_y < 400){
 				kierunek_y += 10;
 				obiekt_y += 10; }
 				else if (podniesiony == false && kierunek_y < 450)
@@ -247,9 +253,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				obiekt_x -= 10;
 			break;
 		case ID_BUTTON4:
-			kierunek_x += 10;
-			if (podniesiony == true)
-				obiekt_x += 10;
+			if (podniesiony == true && obiekt_x < 550){
+				kierunek_x += 10;
+				obiekt_x += 10; }
+			else if (podniesiony == false && kierunek_y < 600)
+				kierunek_x += 10;
 			break;
 		case ID_BUTTON5:
 			podniesiony = true;
